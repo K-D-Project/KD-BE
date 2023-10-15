@@ -22,4 +22,5 @@ public class UserController implements BaseController<User,UserRequestDto> {
     private final UserService service;
 
 
+
 }

@@ -3,7 +3,7 @@ app:
   version: 1.0.0
 
 
-## RDB Property (AWS RDS), MongoDB
+## RDB Property (AWS RDS), MongoDB, Redis
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -16,6 +16,9 @@ spring:
     database-platform: org.hibernate.dialect.MariaDBDialect
     show-sql: true
     format-sql: true
+  redis:
+    host: 54.180.24.185
+    port: 6379
 
 
   data:
@@ -33,5 +36,5 @@ logging:
 
 auth:
   secretKey: kdbe
-  AUTH_EXPIRY: 1200000L #20min
-  REFRESH_EXPIRY: 8000000L #6hours
+  AUTH_EXPIRY: 1200000 #20min
+  REFRESH_EXPIRY: 8000000 #6hours

@@ -2,6 +2,7 @@ package com.example.kdbe.utils;
 
 import com.example.kdbe.auth.KdbeUserDetail;
 import io.jsonwebtoken.*;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Collection;
 import java.util.Date;
@@ -37,7 +39,7 @@ public class AuthUtils {
         KdbeUserDetail userDetail = (KdbeUserDetail) authentication.getPrincipal();
 
         // Setting Subject
-        String subject = userDetail.getUsername();
+        String subject = userDetail.getUsername() + ";";
 
         log.info("AuthToken Generated >> Subject: {}", subject);
 
@@ -77,6 +79,43 @@ public class AuthUtils {
             log.error("Illegal AuthToken: {}", e);
             return false;
         }
+    }
+
+    /**
+     * 서블릿 리퀘스트로 부터 토큰 추출
+     * @param req HttpServletRequest
+     * @return 토큰 또는 Null
+     */
+    public String parseJwtFromHeader(HttpServletRequest req)
+    {
+        String token = req.getHeader("Authorization");
+        if(StringUtils.hasText(token) && token.startsWith("Bearer "))
+        {
+            return token.substring(7);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * 인증 토큰으로부터 유저 ID 가져오기
+     * @param token 인증 토큰
+     * @return 유저ID
+     */
+    public String getUserIdFromJwt(String token)
+    {
+        Claims claims = Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token).getBody();
+
+        String subject = claims.getSubject();
+
+        String userId = subject.split(";")[0];
+
+        if(userId == null) return null;
+
+        return userId;
     }
 }
 

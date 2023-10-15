@@ -26,13 +26,13 @@ class UserRepositoryTest {
     public void setup(){
         user = User.builder()
                 .userId("test1234")
-                .name("kim")
+                .name("김세영")
                 .email("ssss@naver.com")
                 .build();
 
         secondUser = User.builder()
                 .userId("admin1234")
-                .name("kim")
+                .name("김세영")
                 .email("kim@naver.com")
                 .build();
     }
