@@ -9,7 +9,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -22,6 +24,9 @@ class UserTest {
     @PersistenceContext
     EntityManager em;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     User user;
     User secondUser;
 
@@ -31,6 +36,7 @@ class UserTest {
                 .userId("test1234")
                 .name("kim")
                 .email("ssss@naver.com")
+                .password("testtest")
                 .build();
 
         secondUser = User.builder()
@@ -61,18 +67,11 @@ class UserTest {
     @Transactional
     @DisplayName("Credential 검증")
     public void testCredential(){
-        Credential credential = Credential.builder()
-                .hash("asdfasdfa??!")
-                .salt("22221asd")
-                .build();
 
         em.persist(user);
-        em.persist(credential);
-
-        user.changeCredential(credential);
 
         User addCredential = em.createQuery("select u from User u where u.userId = 'test1234'", User.class).getSingleResult();
-        Assertions.assertThat(credential).isEqualTo(addCredential.getCredential());
+        Assertions.assertThat(passwordEncoder.encode(user.getPassword())).isEqualTo(addCredential.getPassword());
     }
 
     @Test

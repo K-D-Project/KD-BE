@@ -19,6 +19,9 @@ spring:
   redis:
     host: 54.180.24.185
     port: 6379
+    username: default
+    password: rlatpdud13795
+    client-type: lettuce
 
 
   data:

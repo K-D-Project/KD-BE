@@ -1,11 +1,12 @@
 package com.example.kdbe.model.dto.request;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.Set;
 
-@Getter
+@Getter @Setter
 public class SignUpRequestDto {
 
     private String userId;

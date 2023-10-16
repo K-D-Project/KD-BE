@@ -1,6 +1,5 @@
 package com.example.kdbe.auth;
 
-import com.example.kdbe.model.entity.Credential;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

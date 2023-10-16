@@ -3,7 +3,7 @@ package com.example.kdbe.model.dto.request;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
+@Getter @Setter
 public class SignInRequestDto {
 
     private String userId;

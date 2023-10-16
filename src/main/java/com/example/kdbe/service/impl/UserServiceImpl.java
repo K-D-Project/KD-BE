@@ -27,6 +27,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -67,9 +69,13 @@ public class UserServiceImpl implements UserService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String authToken = authUtils.generateAuthToken(authentication);
+        String refToken = UUID.randomUUID().toString();
+        RefreshToken refreshToken = new RefreshToken(userDetail.getUsername(), refToken, authToken);
+        refreshTokenRepository.save(refreshToken);
 
         //TODO: Set SignInResponse
         res.setAuthToken(authToken);
+        res.setRefToken(refToken);
 
         return res;
     }
