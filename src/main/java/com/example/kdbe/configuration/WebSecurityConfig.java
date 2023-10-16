@@ -69,7 +69,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.securityMatcher("/**")
+        http.securityMatcher("/information/**")
                 .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated());
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
