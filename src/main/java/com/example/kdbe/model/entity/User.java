@@ -29,9 +29,7 @@ public class User extends BaseEntity {
 
     private String email;
 
-    @OneToOne(fetch = FetchType.LAZY,  orphanRemoval = true)
-    @JoinColumn(name="credential_id")
-    private Credential credential;
+    private String password;
 
 
     // userRole 테이블 추가 변경 필요
@@ -43,22 +41,15 @@ public class User extends BaseEntity {
     private List<UserSpace> userSpaces = new ArrayList<>();
 
     @Builder
-    public User(Long id,String userId, String name, String email, Credential credential, Role role){
+    public User(Long id,String userId, String name, String email, String password, Role role){
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.email = email;
-        if(credential != null){
-            changeCredential(credential);
-        }
+        this.password = password;
         if(role != null){
             changeRole(role);
         }
-    }
-
-    public void changeCredential(Credential credential){
-        this.credential = credential;
-        credential.changeUser(this);
     }
 
     public void changeRole(Role role){

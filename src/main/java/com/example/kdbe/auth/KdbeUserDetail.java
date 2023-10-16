@@ -15,7 +15,7 @@ public class KdbeUserDetail implements UserDetails {
     private @Setter String userId;
     private @Getter @Setter String name;
     private @Getter @Setter String email;
-    private @Setter Credential credential;
+    private @Setter String password;
     private @Setter Collection<? extends GrantedAuthority> authorities;
 
     @Override
@@ -25,7 +25,7 @@ public class KdbeUserDetail implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.credential.getHash();
+        return this.password;
     }
 
     @Override

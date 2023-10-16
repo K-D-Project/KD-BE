@@ -1,6 +1,8 @@
 package com.example.kdbe.utils;
 
 import com.example.kdbe.auth.KdbeUserDetail;
+import com.example.kdbe.model.entity.Credential;
+import com.example.kdbe.model.entity.User;
 import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.*;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -17,6 +20,7 @@ import java.util.Date;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class AuthUtils {
 
     @Value("${auth.secretKey}")
@@ -27,6 +31,8 @@ public class AuthUtils {
 
     @Value("${auth.REFRESH_EXPIRY}")
     private long   REFRESH_EXPIRY;
+
+    private final PasswordEncoder passwordEncoder; // BCryptEncoder
 
     /**
      * 인증 토큰 생성 (시큐리티 인증 객체로부터)
@@ -54,6 +60,8 @@ public class AuthUtils {
 
     /**
      * Jwt 유효성 검증
+     * @author 김세영
+     * @since 2023-10-15
      * @param jwt 토큰
      * @return True Or False
      */
@@ -83,6 +91,8 @@ public class AuthUtils {
 
     /**
      * 서블릿 리퀘스트로 부터 토큰 추출
+     * @author 김세영
+     * @since 2023-10-15
      * @param req HttpServletRequest
      * @return 토큰 또는 Null
      */
@@ -100,6 +110,8 @@ public class AuthUtils {
 
     /**
      * 인증 토큰으로부터 유저 ID 가져오기
+     * @author 김세영
+     * @since 2023-10-15
      * @param token 인증 토큰
      * @return 유저ID
      */
@@ -116,6 +128,16 @@ public class AuthUtils {
         if(userId == null) return null;
 
         return userId;
+    }
+
+    /**
+     * 패스워드 인코딩(BCryptEncoder)
+     * @param password
+     * @return Encoded Password
+     */
+    public String encodePassword(String password)
+    {
+        return passwordEncoder.encode(password);
     }
 }
 
